@@ -1,45 +1,36 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Search, Filter, SlidersHorizontal, ChevronDown, LayoutGrid, List, SearchX } from "lucide-react";
+import { Search, SlidersHorizontal, ChevronDown, LayoutGrid, List, SearchX } from "lucide-react";
 import CompanyCard from "@/components/CompanyCard";
 import { motion, AnimatePresence } from "framer-motion";
 
-const mockResults = [
-  { id: 1, name: "TechNova Solutions", industry: "AI & Cloud", location: "Bangalore", cin: "U72900KA2021PTC145000", estYear: 2021, status: "Active" },
-  { id: 2, name: "GreenFuture Energy", industry: "Renewables", location: "Mumbai", cin: "U40106MH2019PTC320111", estYear: 2019, status: "Active" },
-  { id: 3, name: "BlueFin Logistics", industry: "E-commerce", location: "Gurugram", cin: "U63090HR2018PTC075000", estYear: 2018, status: "Active" },
-  { id: 4, name: "Zenith Health", industry: "Biotech", location: "Hyderabad", cin: "U24232TG2020PTC140000", estYear: 2020, status: "Active" },
-  { id: 5, name: "Alpha Cyber Sec", industry: "Security", location: "Pune", cin: "U74999PN2022PTC180000", estYear: 2022, status: "Active" },
-  { id: 6, name: "Swift Pay Fin", industry: "Fintech", location: "Chennai", cin: "U65100TN2017PTC090000", estYear: 2017, status: "Active" },
-];
-
-const SearchResults = () => {
+const SearchContent = () => {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const [query, setQuery] = useState(initialQuery);
-  const [results, setResults] = useState(mockResults);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [view, setView] = useState("grid");
 
   useEffect(() => {
-    if (initialQuery) {
-      handleSearch(initialQuery);
-    }
+    handleSearch(initialQuery);
   }, [initialQuery]);
 
-  const handleSearch = (q) => {
+  const handleSearch = async (q) => {
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      const filtered = mockResults.filter(c => 
-        c.name.toLowerCase().includes(q.toLowerCase()) || 
-        c.cin.toLowerCase().includes(q.toLowerCase())
-      );
-      setResults(filtered);
+    try {
+      const res = await fetch(`/api/companies?q=${encodeURIComponent(q)}`);
+      const resData = await res.json();
+      if (resData.success) {
+        setResults(resData.data);
+      }
+    } catch (error) {
+      console.error("Search API error:", error);
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   return (
@@ -78,13 +69,13 @@ const SearchResults = () => {
           </div>
 
           <div className="flex items-center gap-2 bg-muted p-1 rounded-xl">
-            <button 
+            <button
               onClick={() => setView("grid")}
               className={`p-2 rounded-lg transition-all ${view === "grid" ? "bg-white dark:bg-slate-800 shadow-sm text-primary" : "text-muted-foreground"}`}
             >
               <LayoutGrid className="w-5 h-5" />
             </button>
-            <button 
+            <button
               onClick={() => setView("list")}
               className={`p-2 rounded-lg transition-all ${view === "list" ? "bg-white dark:bg-slate-800 shadow-sm text-primary" : "text-muted-foreground"}`}
             >
@@ -96,7 +87,7 @@ const SearchResults = () => {
         {/* Results Info */}
         <div className="mb-8 flex justify-between items-center">
           <p className="text-muted-foreground font-medium">
-            Found <span className="text-foreground font-bold">{results.length}</span> results for "{query || "All Companies"}"
+            Found <span className="text-foreground font-bold">{results.length}</span> results for &quot;{query || "All Companies"}&quot;
           </p>
           <div className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">Sort by:</span>
@@ -111,7 +102,7 @@ const SearchResults = () => {
         {/* Results Grid */}
         <AnimatePresence mode="wait">
           {loading ? (
-            <motion.div 
+            <motion.div
               key="loading"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -123,7 +114,7 @@ const SearchResults = () => {
               ))}
             </motion.div>
           ) : results.length > 0 ? (
-            <motion.div 
+            <motion.div
               key="results"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -134,7 +125,7 @@ const SearchResults = () => {
               ))}
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               key="empty"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -152,6 +143,18 @@ const SearchResults = () => {
         </AnimatePresence>
       </div>
     </div>
+  );
+};
+
+const SearchResults = () => {
+  return (
+    <Suspense fallback={
+      <div className="pt-32 pb-20 px-6 min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
+        <div className="text-muted-foreground text-xl">Loading search...</div>
+      </div>
+    }>
+      <SearchContent />
+    </Suspense>
   );
 };
 
