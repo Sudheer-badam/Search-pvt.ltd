@@ -36,7 +36,7 @@ export default function AboutPage() {
             transition={{ delay: 0.2 }}
             className="text-muted-foreground max-w-2xl mx-auto text-lg"
           >
-            Search Pvt.Ltd is the world's leading database for corporate filings, GST compliance, and real-time business insights. We make verification quick, smooth, and accessible.
+            Sudheer Pvt.Ltd is the world's leading database for corporate filings, GST compliance, and real-time business insights. We make verification quick, smooth, and accessible.
           </motion.p>
         </div>
 
@@ -65,7 +65,7 @@ export default function AboutPage() {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
             <Landmark className="w-12 h-12 text-primary mb-6" />
-            <h3 className="text-xl font-bold mb-3">Verified by Search Pvt.Ltd</h3>
+            <h3 className="text-xl font-bold mb-3">Verified by Sudheer Pvt.Ltd</h3>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
               All company datasets are fetched from verified public indexes and updated multiple times daily to maintain supreme accuracy.
             </p>

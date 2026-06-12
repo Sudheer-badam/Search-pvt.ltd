@@ -19,8 +19,31 @@ const CompanyCard = ({ company, index }) => {
       </div>
 
       <div className="flex gap-4 items-start mb-6">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-primary/20">
-          {company.logo || company.name.charAt(0)}
+        <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-border flex items-center justify-center overflow-hidden shrink-0 shadow-lg relative">
+          {company.logo && (company.logo.startsWith("http") || company.logo.startsWith("/")) ? (
+            <>
+              <img 
+                src={company.logo} 
+                alt={`${company.name} logo`} 
+                className="w-full h-full object-contain p-2 bg-white"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  const fallback = e.target.nextSibling;
+                  if (fallback) fallback.style.display = 'flex';
+                }}
+              />
+              <div 
+                className="absolute inset-0 flex items-center justify-center text-white text-2xl font-bold bg-gradient-to-br from-primary to-secondary"
+                style={{ display: 'none' }}
+              >
+                {company.name.charAt(0)}
+              </div>
+            </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-white text-2xl font-bold bg-gradient-to-br from-primary to-secondary">
+              {company.logo && company.logo.length === 1 ? company.logo : company.name.charAt(0)}
+            </div>
+          )}
         </div>
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -53,7 +76,7 @@ const CompanyCard = ({ company, index }) => {
           CIN: {company.cin}
         </span>
         <Link 
-          href={`/companies/${company.id}`}
+          href={`/companies/${company.id || company.cin}`}
           className="text-sm font-semibold text-primary hover:underline"
         >
           View Details

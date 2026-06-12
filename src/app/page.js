@@ -2,13 +2,20 @@ import SearchHero from "@/components/SearchHero";
 import CategoryGrid from "@/components/CategoryGrid";
 import CompanyCard from "@/components/CompanyCard";
 import { TrendingUp, Sparkles, Database, ShieldCheck, Globe } from "lucide-react";
+import { getCompanyLogo } from "@/lib/companyData";
 
-const trendingCompanies = [
+const rawTrendingCompanies = [
   { id: "falcon-ebiz", name: "Falcon Ebiz Pvt Ltd", industry: "IT Services", location: "Thane, Maharashtra", cin: "U72900MH2016PTC281055", estYear: 2016, status: "Active" },
-  { id: 1, name: "TechNova Solutions", industry: "AI & Cloud", location: "Bangalore, India", cin: "U72900KA2021PTC145000", estYear: 2021, status: "Active" },
-  { id: 2, name: "GreenFuture Energy", industry: "Renewables", location: "Mumbai, India", cin: "U40106MH2019PTC320111", estYear: 2019, status: "Active" },
-  { id: 3, name: "BlueFin Logistics", industry: "E-commerce", location: "Gurugram, India", cin: "U63090HR2018PTC075000", estYear: 2018, status: "Active" },
+  { id: "technova-solutions", name: "TechNova Solutions", industry: "AI & Cloud", location: "Bangalore, India", cin: "U72900KA2021PTC145000", estYear: 2021, status: "Active" },
+  { id: "greenfuture-energy", name: "GreenFuture Energy", industry: "Renewables", location: "Mumbai, India", cin: "U40106MH2019PTC320111", estYear: 2019, status: "Active" },
+  { id: "bluefin-logistics", name: "BlueFin Logistics", industry: "E-commerce", location: "Gurugram, India", cin: "U63090HR2018PTC075000", estYear: 2018, status: "Active" },
 ];
+
+const trendingCompanies = rawTrendingCompanies.map(c => ({
+  ...c,
+  logo: getCompanyLogo(c.id, c.name)
+}));
+
 
 export default function Home() {
   return (
@@ -25,7 +32,10 @@ export default function Home() {
             </div>
             <h2 className="text-4xl font-bold">Recently Discovered Startups</h2>
           </div>
-          <button className="px-6 py-3 rounded-xl border border-border hover:bg-muted transition-colors font-medium">
+          <button 
+            suppressHydrationWarning
+            className="px-6 py-3 rounded-xl border border-border hover:bg-muted transition-colors font-medium"
+          >
             View All Companies
           </button>
         </div>
@@ -89,7 +99,10 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <button className="px-10 py-4 rounded-2xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-all flex items-center gap-3">
+          <button 
+            suppressHydrationWarning
+            className="px-10 py-4 rounded-2xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-all flex items-center gap-3"
+          >
             Get API Access
             <TrendingUp className="w-5 h-5" />
           </button>
@@ -128,6 +141,39 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Fixed Bottom-Right Government Trust Badge */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2 group">
+        <div className="relative group-hover:scale-105 transition-all duration-300">
+          {/* Gradient glow ring with Indian Tricolour */}
+          <div 
+            className="absolute inset-[-3px] rounded-full blur-sm"
+            style={{ background: "linear-gradient(to right, #FF9933, #ffffff, #138808)" }}
+          />
+          {/* Circular image container */}
+          <div className="relative h-24 w-24 rounded-full overflow-hidden border-2 border-white/15 shadow-2xl bg-white flex items-center justify-center">
+            <img
+              src="/Screenshot 2026-06-05 152126.png"
+              alt="Ministry of Corporate Affairs Logo"
+              className="w-full h-full object-contain p-1.5"
+            />
+          </div>
+        </div>
+        <div className="text-center opacity-80 group-hover:opacity-100 transition-opacity">
+          <p 
+            className="text-[9px] uppercase font-black tracking-widest bg-clip-text text-transparent"
+            style={{ backgroundImage: "linear-gradient(to right, #FF9933, #ffffff, #138808)" }}
+          >
+            Official Data Source
+          </p>
+          <p 
+            className="text-[10px] font-bold bg-clip-text text-transparent leading-tight"
+            style={{ backgroundImage: "linear-gradient(to right, #FF9933, #ffffff, #138808)" }}
+          >
+            Ministry of Corporate Affairs
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

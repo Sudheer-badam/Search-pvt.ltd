@@ -62,7 +62,7 @@ const LoginPage = () => {
               <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                 <Search className="text-white w-6 h-6" />
               </div>
-              <span className="text-2xl font-bold tracking-tight">Search Pvt.Ltd</span>
+              <span className="text-2xl font-bold tracking-tight">Sudheer Pvt.Ltd</span>
             </Link>
             <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
             <p className="text-muted-foreground">Access your business intelligence dashboard</p>

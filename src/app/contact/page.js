@@ -77,8 +77,8 @@ export default function ContactPage() {
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-muted-foreground uppercase">Toll-Free Support</h4>
-                    <p className="font-bold text-lg mt-1">+91 1800-SEARCH-PL</p>
+                    <h4 className="font-bold text-sm text-muted-foreground uppercase">Phone Support</h4>
+                    <p className="font-bold text-lg mt-1">+91 86885 09699</p>
                   </div>
                 </div>
 

@@ -57,6 +57,7 @@ const SearchHero = () => {
         >
           <form 
             onSubmit={handleSearch}
+            suppressHydrationWarning
             className="glass-premium p-3 rounded-[2.5rem] flex flex-col md:flex-row items-center gap-3 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] border-white/10"
           >
             <div className="flex-1 flex items-center gap-4 px-6 w-full group">
@@ -67,6 +68,7 @@ const SearchHero = () => {
                 className="w-full bg-transparent border-none focus:ring-0 text-xl py-5 font-bold placeholder:text-slate-500 text-white"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                suppressHydrationWarning
               />
             </div>
             
@@ -74,6 +76,7 @@ const SearchHero = () => {
 
             <button 
               type="submit"
+              suppressHydrationWarning
               className="w-full md:w-auto px-10 py-5 rounded-[2rem] bg-gradient-to-r from-primary to-primary-dark text-white font-black hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-primary/40 group"
             >
               SEARCH NOW
@@ -88,12 +91,49 @@ const SearchHero = () => {
               <button
                 key={tag}
                 onClick={() => setQuery(tag)}
+                suppressHydrationWarning
                 className="px-4 py-2 rounded-xl bg-white/5 border border-white/5 hover:border-primary/50 hover:bg-primary/10 text-sm font-bold transition-all text-slate-300"
               >
                 {tag}
               </button>
             ))}
           </div>
+
+          {/* Official Registry Trust Badge */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="mt-14 inline-flex items-center gap-4 px-6 py-3 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-md shadow-xl hover:border-white/10 transition-colors"
+          >
+            <div className="relative">
+              <div 
+                className="absolute inset-[-2px] rounded-full blur-[2px]"
+                style={{ background: "linear-gradient(to right, #FF9933, #ffffff, #138808)" }}
+              />
+              <div className="relative h-12 w-12 flex items-center justify-center overflow-hidden shrink-0 rounded-full bg-white p-1 shadow-lg">
+                <img 
+                  src="/Screenshot 2026-06-05 152126.png" 
+                  alt="Ministry of Corporate Affairs Logo" 
+                  className="w-full h-full object-contain p-0.5"
+                />
+              </div>
+            </div>
+            <div className="text-left">
+              <p 
+                className="text-[10px] uppercase font-black tracking-wider bg-clip-text text-transparent"
+                style={{ backgroundImage: "linear-gradient(to right, #FF9933, #ffffff, #138808)" }}
+              >
+                Official Data Registry Source
+              </p>
+              <p 
+                className="text-xs font-black bg-clip-text text-transparent"
+                style={{ backgroundImage: "linear-gradient(to right, #FF9933, #ffffff, #138808)" }}
+              >
+                Ministry of Corporate Affairs, Government of India
+              </p>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

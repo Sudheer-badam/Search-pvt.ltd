@@ -1,0 +1,10 @@
+# Vercel ignore configuration
+node_modules
+.next
+.git
+.vercel
+Downloads
+out
+build
+coverage
+*.log

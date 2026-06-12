@@ -11,20 +11,24 @@ const SearchContent = () => {
   const initialQuery = searchParams.get("q") || "";
   const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [view, setView] = useState("grid");
 
+  // Load companies on mount and whenever initialQuery changes
   useEffect(() => {
     handleSearch(initialQuery);
+    setQuery(initialQuery);
   }, [initialQuery]);
 
   const handleSearch = async (q) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/companies?q=${encodeURIComponent(q)}`);
+      const res = await fetch(`/api/companies?q=${encodeURIComponent(q)}&limit=50`);
       const resData = await res.json();
       if (resData.success) {
-        setResults(resData.data);
+        setResults(resData.data || []);
+        setTotal(resData.total || resData.data?.length || 0);
       }
     } catch (error) {
       console.error("Search API error:", error);
@@ -87,7 +91,8 @@ const SearchContent = () => {
         {/* Results Info */}
         <div className="mb-8 flex justify-between items-center">
           <p className="text-muted-foreground font-medium">
-            Found <span className="text-foreground font-bold">{results.length}</span> results for &quot;{query || "All Companies"}&quot;
+            Found <span className="text-foreground font-bold">{total.toLocaleString()}</span> results
+            {query ? ` for "${query}"` : " — All Companies"}
           </p>
           <div className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">Sort by:</span>
